@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <dbcontrollee.h>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -24,13 +25,14 @@ void MainWindow::on_pushButton_clicked()
     QString login = ui->lineLoginEdit->text();
     QString password = ui->linePassEdit->text();
 
-    DataBaseController dbContoller;
+    dbcontrollee dbContoller;
     if(dbContoller.connect(login, password)){
        ui->statusbar->showMessage("Connected", 3000);
        ui->pushButton->setEnabled(false);
     }else{
        ui->statusbar->showMessage("Error connected", 3000);
     }
+
 
 }
 

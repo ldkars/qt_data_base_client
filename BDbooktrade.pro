@@ -17,12 +17,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     clientwindow.cpp \
+    dbcontrollee.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
     clientwindow.h \
-    databasecontroller.h \
+    dbcontrollee.h \
     mainwindow.h
 
 FORMS += \
