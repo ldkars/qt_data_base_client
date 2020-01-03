@@ -17,7 +17,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     clientwindow.cpp \
-    db_controller.cpp \
     main.cpp \
     mainwindow.cpp
 
