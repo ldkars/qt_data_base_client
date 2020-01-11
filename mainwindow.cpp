@@ -31,8 +31,25 @@ void MainWindow::on_pushButton_clicked()
        ui->pushButton->setEnabled(false);
     }else{
        ui->statusbar->showMessage("Error connected", 3000);
+       return;
     }
 
+    QSqlQuery query(dbContoller.db);
+
+    query.prepare("sp_helpuser 'Client_login'");
+    query.exec();
+
+    query.next();
+    QString country = query.value("RoleName").toString();
+
+    query.finish();
+
+    if(country == "Client"){
+        ClientWindow window;
+        window.setModal(true);
+        window.linkDb = &dbContoller.db;
+        window.exec();
+    }
 
 }
 

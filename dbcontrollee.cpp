@@ -13,7 +13,7 @@ bool dbcontrollee::connect(QString login, QString password){
     QString driver = "SQL Server";
     QString server = "DESKTOP-F4HC3G1\\SQLEXPRESS";
     int port = 1433;
-    QString database  = "test";
+    QString database  = "BookTrade";
     const QString connection_string_sqlauth =
             QString("DRIVER={%1};SERVER=%2;PORT=%3;DATABASE=%4;UID=%5;PWD=%6");
 
