@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <dbcontrollee.h>
 #include <clientwindow.h>
+#include <shipperwindow.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

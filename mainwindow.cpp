@@ -36,12 +36,11 @@ void MainWindow::on_pushButton_clicked()
 
     QSqlQuery query(dbContoller.db);
 
-    query.prepare("sp_helpuser 'Client_login'");
+    query.prepare("sp_helpuser '"+login+"'");
     query.exec();
 
     query.next();
-    QString country = query.value("RoleName").toString();
-
+    QString country = query.value("Role_name").toString();
     query.finish();
 
     if(country == "Client"){
@@ -49,7 +48,18 @@ void MainWindow::on_pushButton_clicked()
         window.setModal(true);
         window.linkDb = &dbContoller.db;
         window.exec();
+        ui->statusbar->showMessage("Welcome dear client", 30000);
     }
+
+    if(country == "Shipper"){
+        ShipperWindow window;
+        window.setModal(true);
+        window.linkDb = &dbContoller.db;
+        window.exec();
+        ui->statusbar->showMessage("Welcome dear shipper", 30000);
+    }
+
+    ui->statusbar->showMessage("You are not registered", 3000);
 
 }
 

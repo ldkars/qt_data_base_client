@@ -28,6 +28,7 @@ private:
     Ui::ClientWindow *ui;
     QSqlQueryModel   *categoryDevice;
     QSqlQueryModel   *bookDevice;
+    QSqlQueryModel   *feedBackDevice;
 };
 
 #endif // CLIENTWINDOW_H

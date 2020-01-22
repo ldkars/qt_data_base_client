@@ -9,6 +9,7 @@ ClientWindow::ClientWindow(QWidget *parent) :
 
      categoryDevice = new QSqlQueryModel(this);
      bookDevice = new QSqlQueryModel(this);
+     feedBackDevice = new QSqlQueryModel(this);
 }
 
 ClientWindow::~ClientWindow()
@@ -102,7 +103,6 @@ void ClientWindow::on_bookView_clicked(const QModelIndex &index)
     query.next();
     ui->priceLabel->setText(query.value("price").toString() + " Р.");
 
-    //SELECT star FROM FEEDBACK WHERE book_id = 1
     query.prepare("SELECT star FROM FEEDBACK WHERE book_id = " + QString::number(book_id));
     query.exec();
     double star = 0.0;
@@ -112,5 +112,45 @@ void ClientWindow::on_bookView_clicked(const QModelIndex &index)
         size++;
     }
     star = star / size;
-    ui->starLabel->setText(QString::number(star));
+    ui->starLabel->setText("Raiting: " + QString::number(star));
+
+    QString feedBacksql = "SELECT book_id, FIO, comment, star, date FROM FEEDBACK INNER JOIN CLIENT ON FEEDBACK.client_id = CLIENT.client_id WHERE book_id = ";
+    feedBackDevice->setQuery(feedBacksql + QString::number(book_id), *linkDb);
+
+    QStringList headers;
+    headers.append("id");
+    headers.append("FIO");
+    headers.append("comment");
+    headers.append("Star");
+    headers.append("Date");
+
+    for(int i = 0, j = 0; i < feedBackDevice->columnCount(); i++, j++){
+        feedBackDevice->setHeaderData(i,Qt::Horizontal,headers[j]);
+    }
+
+    ui->feebBackView->setModel(feedBackDevice);
+    // Устанавливаем модель на TableView
+    ui->feebBackView->setColumnHidden(0, true);    // Скрываем колонку с id записей
+    // Разрешаем выделение строк
+    ui->feebBackView->setSelectionBehavior(QAbstractItemView::SelectRows);
+    // Устанавливаем режим выделения лишь одно строки в таблице
+    ui->feebBackView->setSelectionMode(QAbstractItemView::SingleSelection);
+    // Устанавливаем размер колонок по содержимому
+    ui->feebBackView->resizeColumnsToContents();
+    ui->feebBackView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->feebBackView->horizontalHeader()->setStretchLastSection(true);
+
+
+  /*  QScreen *screen = QApplication::primaryScreen();    // Берём объект экрана
+    QPixmap inPixmap = screen->grabWindow( 0 );         // Сохраняем его в изображение объекта QPixmap
+    QByteArray inByteArray;                             // Создаём объект QByteArray для сохранения изображения
+    QBuffer inBuffer( &inByteArray );                   // Сохранение изображения производим через буффер
+    inBuffer.open( QIODevice::WriteOnly );              // Открываем буффер
+    inPixmap.save( &inBuffer, "PNG" );                  // Записываем inPixmap в inByteArray
+
+     // Записываем скриншот в базу данных
+     db->insertIntoTable(QDateTime::currentDateTime().toString("dd.MM.yyyy_hh:mm:ss.png"), inByteArray);
+  */
+
+
 }

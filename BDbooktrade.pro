@@ -19,16 +19,19 @@ SOURCES += \
     clientwindow.cpp \
     dbcontrollee.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    shipperwindow.cpp
 
 HEADERS += \
     clientwindow.h \
     dbcontrollee.h \
-    mainwindow.h
+    mainwindow.h \
+    shipperwindow.h
 
 FORMS += \
     clientwindow.ui \
-    mainwindow.ui
+    mainwindow.ui \
+    shipperwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
