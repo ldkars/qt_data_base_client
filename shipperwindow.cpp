@@ -141,6 +141,34 @@ void ShipperWindow::on_typeView_doubleClicked(const QModelIndex &index)
 
 void ShipperWindow::on_imageButton_clicked()
 {
-    imageaddr = QFileDialog::getOpenFileName(0, "Open Image");
+    /*imageaddr = QFileDialog::getOpenFileName(0, "Open Image");
     qDebug() << imageaddr;
+    ui->label->setScaledContents(true);
+   // ui->label->setPixmap(QPixmap(imageaddr));
+
+    QPixmap inPixmap = QPixmap(imageaddr);         // Сохраняем его в изображение объекта QPixmap
+    QByteArray inByteArray;                        // Создаём объект QByteArray для сохранения изображения
+    QBuffer inBuffer( &inByteArray );              // Сохранение изображения производим через буффер
+    inBuffer.open( QIODevice::WriteOnly );         // Открываем буффер
+    inPixmap.save( &inBuffer, "PNG" );             // Записываем inPixmap в inByteArray
+ */
+    QSqlQuery query(*linkDb);
+
+    /*
+    query.prepare("INSERT INTO PICTURE  VALUES(:id, :byte)");
+    query.bindValue(":id", 4);
+    query.bindValue(":byte",   inByteArray);
+
+    if(!query.exec()){
+        qDebug() << query.lastError().text();
+    }
+*/
+    QString tsql = "SELECT byte FROM PICTURE WHERE id = 4";
+    query.prepare(tsql);
+    query.exec();
+    query.next();
+
+    QPixmap outPixmap = QPixmap();
+    outPixmap.loadFromData(query.value("byte").toByteArray());
+    ui->label->setPixmap(outPixmap.scaled(500,300));
 }
