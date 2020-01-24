@@ -40,7 +40,7 @@ void MainWindow::on_pushButton_clicked()
     query.exec();
 
     query.next();
-    QString country = query.value("RoleName").toString();
+    QString country = query.value("Role_name").toString();
     query.finish();
 
     if(country == "Client"){

@@ -195,4 +195,42 @@ void ShipperWindow::on_addBookButton_clicked()
     if(!query.exec()){
         qDebug() << query.lastError().text();
     }
+
+    switch (vec_author_id.size()) {
+        case 1:
+            query.prepare("EXEC insertGroupAuthor1 :book_id, :id");
+            query.bindValue(":id", vec_author_id[0]);
+            query.exec();
+            break;
+        case 2:
+            query.prepare("EXEC insertGroupAuthor2 :book_id, :id, :id2");
+            query.bindValue(":id1", vec_author_id[0] );
+            query.bindValue(":id2", vec_author_id[1]);
+            query.exec();
+            break;
+        case 3:
+            query.prepare("EXEC insertGroupAuthor3 :book_id, :id, :id2, id3");
+            query.bindValue(":id1", vec_author_id[0] );
+            query.bindValue(":id2", vec_author_id[1]);
+            query.bindValue(":id3", vec_author_id[2]);
+            query.exec();
+            break;
+        case 4:
+            query.prepare("EXEC insertGroupAuthor4 :book_id, :id, :id2, :id3, :id4");
+            query.bindValue(":id1", vec_author_id[0] );
+            query.bindValue(":id2", vec_author_id[1]);
+            query.bindValue(":id3", vec_author_id[2]);
+            query.bindValue(":id4", vec_author_id[3]);
+            query.exec();
+            break;
+        case 5:
+            query.prepare("EXEC insertGroupAuthor5 :book_id, :id, :id2, :id3, :id4, :id5");
+            query.bindValue(":id1", vec_author_id[0] );
+            query.bindValue(":id2", vec_author_id[1]);
+            query.bindValue(":id3", vec_author_id[2]);
+            query.bindValue(":id4", vec_author_id[3]);
+            query.bindValue(":id5", vec_author_id[4]);
+            query.exec();
+            break;
+   }
 }
