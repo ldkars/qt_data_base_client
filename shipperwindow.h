@@ -36,6 +36,8 @@ private slots:
 
     void on_imageButton_clicked();
 
+    void on_addBookButton_clicked();
+
 private:
     Ui::ShipperWindow *ui;
     QSqlQueryModel   *categoryAuthor;
@@ -47,7 +49,9 @@ private:
     int house_id;
     int caregory_id;
     int cover_id;
+    int book_id;
     QString imageaddr;
+    QByteArray inByteArray;
 };
 
 #endif // SHIPPERWINDOW_H

@@ -141,34 +141,58 @@ void ShipperWindow::on_typeView_doubleClicked(const QModelIndex &index)
 
 void ShipperWindow::on_imageButton_clicked()
 {
-    /*imageaddr = QFileDialog::getOpenFileName(0, "Open Image");
+    imageaddr = QFileDialog::getOpenFileName(0, "Open Image");
     qDebug() << imageaddr;
     ui->label->setScaledContents(true);
-   // ui->label->setPixmap(QPixmap(imageaddr));
+    ui->label->setPixmap(QPixmap(imageaddr));
 
-    QPixmap inPixmap = QPixmap(imageaddr);         // Сохраняем его в изображение объекта QPixmap
-    QByteArray inByteArray;                        // Создаём объект QByteArray для сохранения изображения
+    QPixmap inPixmap = QPixmap(imageaddr);         // Сохраняем его в изображение объекта QPixmap                      // Создаём объект QByteArray для сохранения изображения
     QBuffer inBuffer( &inByteArray );              // Сохранение изображения производим через буффер
     inBuffer.open( QIODevice::WriteOnly );         // Открываем буффер
     inPixmap.save( &inBuffer, "PNG" );             // Записываем inPixmap в inByteArray
- */
-    QSqlQuery query(*linkDb);
 
-    /*
-    query.prepare("INSERT INTO PICTURE  VALUES(:id, :byte)");
-    query.bindValue(":id", 4);
-    query.bindValue(":byte",   inByteArray);
 
-    if(!query.exec()){
-        qDebug() << query.lastError().text();
-    }
-*/
-    QString tsql = "SELECT byte FROM PICTURE WHERE id = 4";
+
+
+
+
+   /* QString tsql = "SELECT byte FROM PICTURE WHERE id = 4";
     query.prepare(tsql);
     query.exec();
     query.next();
 
     QPixmap outPixmap = QPixmap();
     outPixmap.loadFromData(query.value("byte").toByteArray());
-    ui->label->setPixmap(outPixmap.scaled(500,300));
+    ui->label->setPixmap(outPixmap.scaled(500,300));*/
+}
+
+void ShipperWindow::on_addBookButton_clicked()
+{
+    QSqlQuery query(*linkDb);
+    query.prepare("EXEC insertBook :named, :price, :type_id, :house_id, :category_id, :desc, :date_public, :date_print");
+    query.bindValue(":named", ui->lineEditBookName->text());
+    query.bindValue(":price",   ui->spinBox->value());
+    query.bindValue(":type_id",  cover_id);
+    query.bindValue(":house_id",  house_id);
+    query.bindValue(":category_id",   caregory_id);
+    query.bindValue(":desc",   ui->plainTextEdit->toPlainText());
+    query.bindValue(":date_public",   ui->datePublic->text());
+    query.bindValue(":date_print",   ui->datePrint->text());
+
+    if(!query.exec()){
+        qDebug() << query.lastError().text();
+    }
+
+    query.prepare("getID");
+    query.exec();
+    query.next();
+    book_id = query.value("book_id").toInt();
+
+    query.prepare("INSERT INTO PICTURE  VALUES(:id, :byte)");
+    query.bindValue(":id", book_id);
+    query.bindValue(":byte", inByteArray);
+
+    if(!query.exec()){
+        qDebug() << query.lastError().text();
+    }
 }
