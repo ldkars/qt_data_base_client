@@ -7,7 +7,9 @@ CREATE PROCEDURE insertBook
 	@type_id as int,
 	@House_id as int,
 	@category_id as int,
-	@description as nvarchar(max)
+	@description as nvarchar(max),
+	@date_public as date,
+	@date_print as date
 )
 AS
 	declare @new_id int
@@ -22,12 +24,17 @@ AS
 		type_id, 
 		publishingHouse_id, 
 		category_id,
-		description
+		description,
+		date_public,
+		date_print
 	)
-    VALUES (@new_id, @named, @price, @type_id, @House_id, @category_id, @description);
-
-	PRINT @new_id;
+    VALUES (@new_id, @named, @price, @type_id, @House_id, @category_id, @description, @date_public, @date_print);
+	SELECT MAX(book_id) as book_id FROM BOOK
 GO
+
+EXEC insertBook 'New Book', 2300, 1, 1, 1, 'TOP BOOK', '06.11.1998', '06.11.2003'
+SELECT * FROM BOOK
+
 
 --USE BookTrade
 --ALTER TABLE BOOK ALTER COLUMN author_group_id int null;
