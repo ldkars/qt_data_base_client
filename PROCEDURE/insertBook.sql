@@ -32,9 +32,6 @@ AS
 	SELECT MAX(book_id) as book_id FROM BOOK
 GO
 
-EXEC insertBook 'New Book', 2300, 1, 1, 1, 'TOP BOOK', '06.11.1998', '06.11.2003'
-SELECT * FROM BOOK
-
 
 --USE BookTrade
 --ALTER TABLE BOOK ALTER COLUMN author_group_id int null;

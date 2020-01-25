@@ -20,6 +20,9 @@ ClientWindow::~ClientWindow()
 
 void ClientWindow::on_refreshButton_clicked()
 {
+    for(size_t i = 0; i < vec_book_cart.size(); i++){
+        qDebug() << vec_book_cart[i].book_id << "count" << vec_book_cart[i].count;
+    }
 
     categoryDevice->setQuery("SELECT * FROM CATEGORY_BOOK", *linkDb);
 
@@ -87,7 +90,6 @@ void ClientWindow::on_categotyView_clicked(const QModelIndex &index)
 
 void ClientWindow::on_bookView_clicked(const QModelIndex &index)
 {
-    int book_id;
     book_id = ui->bookView->model()->data(ui->bookView->model()->index(index.row(), 0)).toInt();
 
     QString tsql = "SELECT description FROM BOOK WHERE BOOK.book_id = ";
@@ -141,16 +143,35 @@ void ClientWindow::on_bookView_clicked(const QModelIndex &index)
     ui->feebBackView->horizontalHeader()->setStretchLastSection(true);
 
 
-  /*  QScreen *screen = QApplication::primaryScreen();    // Берём объект экрана
-    QPixmap inPixmap = screen->grabWindow( 0 );         // Сохраняем его в изображение объекта QPixmap
-    QByteArray inByteArray;                             // Создаём объект QByteArray для сохранения изображения
-    QBuffer inBuffer( &inByteArray );                   // Сохранение изображения производим через буффер
-    inBuffer.open( QIODevice::WriteOnly );              // Открываем буффер
-    inPixmap.save( &inBuffer, "PNG" );                  // Записываем inPixmap в inByteArray
+     tsql = "SELECT byte FROM PICTURE WHERE id = " ;
+     query.prepare(tsql + QString::number(book_id));
+     query.exec();
+     query.next();
+     ui->imageLabel->setScaledContents(true);
+     QPixmap outPixmap = QPixmap();
+     outPixmap.loadFromData(query.value("byte").toByteArray());
+     ui->imageLabel->setPixmap(outPixmap.scaled(331,381));
+}
 
-     // Записываем скриншот в базу данных
-     db->insertIntoTable(QDateTime::currentDateTime().toString("dd.MM.yyyy_hh:mm:ss.png"), inByteArray);
-  */
 
+void ClientWindow::on_pushButton_clicked()
+{
+    for(size_t i = 0; i < vec_book_cart.size(); i++){
+        if(vec_book_cart[i].book_id == book_id){
+            vec_book_cart[i].count++;
+            return;
+        }
+    }
+    book_cart book; book.book_id = book_id; book.count = 1;
+    vec_book_cart.push_back(book);
+}
 
+void ClientWindow::on_pushButton_2_clicked()
+{
+    Cart Cart;
+    Cart.setModal(true);
+    Cart.linkDb = linkDb;
+    Cart.setVec(vec_book_cart);
+    Cart.client_id = client_id;
+    Cart.exec();
 }

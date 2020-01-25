@@ -16,6 +16,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    cart.cpp \
     clientwindow.cpp \
     dbcontrollee.cpp \
     main.cpp \
@@ -23,12 +24,15 @@ SOURCES += \
     shipperwindow.cpp
 
 HEADERS += \
+    Book_cart.h \
+    cart.h \
     clientwindow.h \
     dbcontrollee.h \
     mainwindow.h \
     shipperwindow.h
 
 FORMS += \
+    cart.ui \
     clientwindow.ui \
     mainwindow.ui \
     shipperwindow.ui
